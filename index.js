@@ -261,10 +261,6 @@ function main() {
 	//camera.rotation.z = 1;
 
 
-	//const controls = new OrbitControls( camera, canvas );
-	//controls.target.set( 0, 5, 0 );
-	//controls.update();
-
 	// Scene Controller //
 
 
@@ -339,19 +335,20 @@ function main() {
 	var animTarget = 0;
 	var offset = 1000;
 
-	const panLight = new THREE.PointLight(0x00b500,3);
+	//3
+	const panLight = new THREE.PointLight(0x00b500,0);
 	panLight.position.set(0,9+offset,3)
 	scene.add(panLight);
-
-	const coffeeLight = new THREE.PointLight(0xed0000,3);
+	//3
+	const coffeeLight = new THREE.PointLight(0xed0000,0);
 	coffeeLight.position.set(3,5+offset,-2)
 	scene.add(coffeeLight);
-
-	const ashLight = new THREE.PointLight(0xe0ce00,2);
+	//2
+	const ashLight = new THREE.PointLight(0xe0ce00,0);
 	ashLight.position.set(0,5.5+offset,-4.1)
 	scene.add(ashLight);
-
-	const bottleLight = new THREE.PointLight(0x060075,3);
+	//3
+	const bottleLight = new THREE.PointLight(0x060075,0);
 	bottleLight.position.set(3.7,2.8+offset,-3)
 	scene.add(bottleLight);
 
@@ -483,7 +480,6 @@ function main() {
 
 					const moveCamera = new THREE.Vector3(0,0,.05);
 					moveCamera.applyQuaternion(camera.quaternion);
-					
 
 					if(!init){
 						init = true;
@@ -498,7 +494,16 @@ function main() {
 						mixer.update(0);
 						ambientLight.intensity = .01;
 						action.play();
-						//setTimeout(function(){pointLight2.intensity = 0; ambientLight.intensity = 0;},1000);
+						if(animTarget == 1){
+							panLight.intensity = 3;
+						}else if(animTarget == 2){
+							coffeeLight.intensity = 2;
+						}else if(animTarget == 3){
+							ashLight.intensity = 3;
+						}else if(animTarget == 4){
+							bottleLight.intensity = 4;
+						}
+						
 					}
 
 					if(elapsedTime > 25 && sceneTracker == 1){
@@ -589,11 +594,22 @@ function main() {
 		let pose = 0; // Initialize pose
 	
 		// Load ceiling
-		gltfLoader.load(("./ceiling.gltf"), (gltf) => {
-			let gltfscene = gltf.scene;
-			gltfscene.visible = true;
-			scene.add(gltfscene);
-		});
+		function loadCeiling(visible){
+			gltfLoader.load(("./ceiling.gltf"), (gltf) => {
+				let gltfscene = gltf.scene;
+				gltfscene.visible = visible;
+				gltf.scene.traverse((child) => {
+					if (child.isMesh) {
+						// Enable backface culling for each mesh
+						child.material.side = THREE.FrontSide; // or THREE.FrontSide for front face culling
+					}
+				});
+				scene.add(gltfscene);
+			});
+		}
+
+		loadCeiling(true);
+		setTimeout(alanTimelapse,30000);
 
 		loadAndAddScene("./alan_cook.gltf", 0,true);
 
@@ -603,11 +619,18 @@ function main() {
 			sc2_camera_num += 1;
 		},5000);
 
-
 		// I did have help from ChatGPT here, I was trying to use the function that I wrote (at the bottom of code) but it for some odd reason didn't function
 		// properly -- some random Promise and async bullshit
 		function alanTimelapse(start){
 		
+			clearInterval(intervalID);
+
+			loadCeiling(false);
+
+			const controls = new OrbitControls( camera, canvas );
+			controls.target.set( 0, 5, 0 );
+			controls.update();
+
 			// Load GLTF scenes
 			loadAndAddScene("./alan_sink.gltf", 1,false);
 			loadAndAddScene("./alan_chair.gltf", 2,false);
