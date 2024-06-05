@@ -1,0 +1,153 @@
+<html>
+    <head>
+        <title>
+            Alan's Psychedelic Breakfast
+        </title>
+        <style>
+            #container {
+                position: relative;
+                width: 100%;
+                height: 100vh;
+            }
+            canvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            #playbutton {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 3; 
+            }
+            .photo{
+                max-width: 50%;
+                height: auto;
+                display: block; 
+                margin: 0 auto; 
+            }
+            .photolarge{
+                max-width: 100%;
+                height: auto;
+                display: block; 
+                margin: 0 auto; 
+            }
+            .blackbox {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                background-color: rgba(0,0,0,1);
+                z-index: 2;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+            }
+            .title{
+                position: absolute;
+                top: 15%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                color: white;
+                font-size: 30px;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            }
+            .play{
+                position: absolute;
+                top: 80%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                color: white;
+                font-size: 30px;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+            }
+            .desctitle{
+                position: absolute;
+                top: 10%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                color: rgb(0, 0, 0);
+                font-size: 30px;
+                font: bold;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            }
+            .descbody{
+                position: absolute;
+                top: calc(10% + 40px); /* Adjust this value to control the distance between title and description */
+                left: 50%;
+                transform: translateX(-50%);
+                color: rgb(0, 0, 0);
+                font-size: 20px; /* Adjust font size as needed */
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            }
+
+
+        </style>
+        <script type="importmap">{
+            "imports":{
+              "three": "./threejs/three.module.js",
+              "postprocessing": "./threejs/postprocessing",
+              "GLTFLoad": "./threejs/GLTFLoader.js",
+              "Orbit": "./threejs/OrbitControls.js",
+              "OBJLoad": "./threejs/OBJLoader.js",
+              "MTLLoad": "./threejs/MTLLoader.js"
+            }
+          }
+        </script>
+    </head>
+    <body>
+        <div id="start" class="blackbox">
+            <div class="title">Alan's Psychedelic Breakfast</div>
+            <img id="playbutton"src=".\assets\AtomHeartMotherCover.jpeg"></img>
+            <div id ="loading" class="play">Loading Assets...</div>
+        </div>
+        <div id="container">
+            <canvas id="canvas"></canvas>
+        </div>
+        <div id="container">
+            <div class="desctitle">Alan's Psychedelic Breakfast</div>
+            <div class="descbody">This project is based upon the song "Alan's Psychedelic Breakfast" <br>from Pink Floyd's 1970 Album "Atom Heart Mother".
+                <br><br>
+                In the creation of this project I modelled and textured everything by hand using Blender and Substance Painter.
+                <br><br>
+                Considering the album was made in the 1970s, I figured I wanted a dated looking kitchen, luckily my house has just that.
+                <br><br>
+                <img id="photo" class="photo" src="./assets/kitchen_photo.jpg" ></img>
+                <br>
+                Firstly, I took a LiDar scan of my kitchen using my iPhone, importing it into Blender. (You can rotate it)
+                <br>
+                <canvas id="canvas2"></canvas>
+                <br><br>
+                Once I had it imported into blender, I used it as a guide as I began to model the objects throughout my kitchen.
+                <br><br>
+                <img id="photo2" class="photolarge" src="./assets/blender_photo.png" ></img>
+                <br><br>
+                I used Substance Painter to individually texture them.
+                <br><br>
+                <img id="photo3" class="photolarge" src="./assets/substance_photo.png" ></img>
+                <br><br>
+                For the larger objects in the scene, I wasn't satisfied with the Three.js lighting, so I decided to bake the lighting onto the textures in Blender.
+                <br><br>
+                On the three.js side of things it was relatively intuitive, I imported all my models as GLTFs and sligtly adjusted the ambient lighting. 
+                <br><br>
+                For the intro scene, I used setInterval() to constantly check the time (every 750ms or so, as I found it was less consistent below that) and I lined up the match animation that I made in blender to the song using an array of timestamps.
+                <br><br>
+                That's about it! I don't consider this project complete yet, if you wait for the song to go on there is a second scene but I couldn't finish it in time. I'll be updating the project at this page.
+                <br><br>
+
+
+            </div>
+            </div>
+        </div>
+        <canvas id="c"></canvas>
+        <script type="module" src="./index.js"></script>
+    </body>
+</html>
+
+<!-- Note: I did have some help from ChatGPT on the CSS side of things as a lot of the formatting part was done last minute -->
